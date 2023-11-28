@@ -1,8 +1,9 @@
-module.exports = (req, res, next) => {
-    req.writeHead(200, {
+module.exports = (req, res) => {
+    res.writeHead(200, {
         'Content-type': 'application/json',
     });
-    req.send = (data) => {
-        req.end(JSON.stringify(data));
+
+    res.send = (data) => {
+        res.end(JSON.stringify(data));
     };
 };

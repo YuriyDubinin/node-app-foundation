@@ -8,8 +8,24 @@ module.exports = class Server {
         this.middlewares = [];
     }
 
-    _getRouteMask(path, method) {
-        return `[${path}]:[${method}]`;
+    use(middleware) {
+        this.middlewares.push(middleware);
+    }
+
+    listen(port, callback) {
+        this.server.listen(port, callback);
+    }
+
+    addRouter(router) {
+        Object.keys(router.endpoints).forEach((path) => {
+            const endpoint = router.endpoints[path];
+            Object.keys(endpoint).forEach((method) => {
+                this.emitter.on(this._getRouteMask(path, method), (req, res) => {
+                    const handler = endpoint[method];
+                    handler(req, res);
+                });
+            });
+        });
     }
 
     _createServer() {
@@ -24,13 +40,13 @@ module.exports = class Server {
                 if (body) {
                     req.body = JSON.parse(body);
                 }
+                this.middlewares.forEach((middleware) => middleware(req, res));
 
                 const emitted = this.emitter.emit(
-                    this._getRouteMask(req.url, req.method),
+                    this._getRouteMask(req.pathname, req.method),
                     req,
                     res,
                 );
-
                 if (!emitted) {
                     res.end();
                 }
@@ -38,27 +54,7 @@ module.exports = class Server {
         });
     }
 
-    use(middleware) {
-        this.middlewares.push(middleware);
-    }
-
-    listen(port, callback) {
-        this.server.listen(port, callback);
-    }
-
-    addRouter(router) {
-        Object.keys(router.endpoints).forEach((path) => {
-            const endpoint = router.endpoints[path];
-
-            Object.keys(endpoint).forEach((method) => {
-                this.emitter.on(this._getRouteMask(path, method), (req, res) => {
-                    const handler = endpoint[method];
-
-                    this.middlewares.forEach((middleware) => middleware(res, req));
-
-                    handler(req, res);
-                });
-            });
-        });
+    _getRouteMask(path, method) {
+        return `[${path}]:[${method}]`;
     }
 };
