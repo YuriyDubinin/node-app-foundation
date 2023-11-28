@@ -1,20 +1,15 @@
 const dotenv = require('dotenv');
 const Router = require('./src/app/Router');
 const Server = require('./src/app/Server');
+const jsonParser = require('./src/middlewares/parseJson');
+
+const usersRouter = require('./src/handlers/users/users-router');
 
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
-const router = new Router();
 const server = new Server();
 
-router.get('/users', (req, res) => {
-    res.end('You send request to /users');
-});
-
-router.get('/posts', (req, res) => {
-    res.end('You send request to /posts');
-});
-
-server.addRouter(router);
+server.use(jsonParser);
+server.addRouter(usersRouter);
 server.listen(PORT, () => console.log(`Server started on PORT: ${PORT}`));
