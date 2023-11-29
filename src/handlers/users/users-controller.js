@@ -1,23 +1,36 @@
-const users = [
-    {id: 1, name: 'Yura'},
-    {id: 2, name: 'Nastya'},
-];
+const User = require('./user-modal');
 
-const getUsers = (req, res) => {
+const getUsers = async (req, res) => {
+    let users;
+
     if (req.params.id) {
-        return res.send(users.find((user) => user.id === +req.params.id));
+        users = await User.findById(req.params.id);
+    } else {
+        users = await User.find();
     }
+    
     res.send(users);
 };
 
-const createUser = (req, res) => {
-    const user = req.body;
+const createUser = async (req, res) => {
+    const user = await User.create(req.body);
 
-    users.push(user);
-    res.send(users);
+    res.send(user);
 };
+
+
+// TODO: add method
+// const updateUser = async (req, res) => {
+//     const user = req.body;
+//     const result =  users.filter(item => item.id !== user.id)
+    
+//     result.push(user);
+
+//     res.send(result)
+// };
 
 module.exports = {
     getUsers,
     createUser,
+    // updateUser,
 };

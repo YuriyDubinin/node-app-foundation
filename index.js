@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const Router = require('./src/app/Router');
 const Server = require('./src/app/Server');
@@ -16,4 +17,16 @@ server.use(parseJson);
 server.use(parseUrl(baseUrl));
 
 server.addRouter(usersRouter);
-server.listen(PORT, () => console.log(`Server started on PORT: ${PORT}`));
+
+
+const start = async () => {
+    try {
+        await mongoose.connect(process.env.DB_URL);
+        server.listen(PORT, () => console.log(`Server started on PORT: ${PORT}`));
+        
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+start();
