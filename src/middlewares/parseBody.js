@@ -1,3 +1,5 @@
 module.exports = (req, res) => {
-    console.log('body: ', req.body);
+    if (req.body) {
+        req.body = JSON.parse(req.body);
+    }
 };

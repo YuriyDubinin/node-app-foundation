@@ -20,12 +20,10 @@ server.use(parseUrl(baseUrl));
 
 server.addRouter(usersRouter);
 
-
 const start = async () => {
     try {
         await mongoose.connect(process.env.DB_URL);
         server.listen(PORT, () => console.log(`Server started on PORT: ${PORT}`));
-        
     } catch (e) {
         console.log(e);
     }

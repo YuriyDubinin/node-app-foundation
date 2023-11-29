@@ -30,16 +30,13 @@ module.exports = class Server {
 
     _createServer() {
         return http.createServer((req, res) => {
-            let body = '';
+            req.body = '';
 
             req.on('data', (chunk) => {
-                body += chunk;
+                req.body += chunk;
             });
 
             req.on('end', () => {
-                if (body) {
-                    req.body = JSON.parse(body);
-                }
                 this.middlewares.forEach((middleware) => middleware(req, res));
 
                 const emitted = this.emitter.emit(

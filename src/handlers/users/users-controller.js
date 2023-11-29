@@ -8,7 +8,7 @@ const getUsers = async (req, res) => {
     } else {
         users = await User.find();
     }
-    
+
     res.send(users);
 };
 
@@ -18,12 +18,11 @@ const createUser = async (req, res) => {
     res.send(user);
 };
 
-
 // TODO: add method
 // const updateUser = async (req, res) => {
 //     const user = req.body;
 //     const result =  users.filter(item => item.id !== user.id)
-    
+
 //     result.push(user);
 
 //     res.send(result)
