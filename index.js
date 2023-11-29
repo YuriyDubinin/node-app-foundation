@@ -5,8 +5,7 @@ const Server = require('./src/app/Server');
 const parseJson = require('./src/middlewares/parseJson');
 const parseUrl = require('./src/middlewares/parseUrl');
 const parseBody = require('./src/middlewares/parseBody');
-
-const usersRouter = require('./src/handlers/users/users-router');
+const usersRouter = require('./src/routers/users-router');
 
 dotenv.config();
 

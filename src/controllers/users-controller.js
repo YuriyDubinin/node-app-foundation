@@ -1,4 +1,4 @@
-const User = require('./user-modal');
+const User = require('../modals/user-modal');
 
 const getUsers = async (req, res) => {
     let users;

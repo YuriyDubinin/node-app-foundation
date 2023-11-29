@@ -1,5 +1,5 @@
-const Router = require('../../app/Router');
-const controller = require('../../handlers/users/users-controller');
+const Router = require('../app/Router');
+const controller = require('../controllers/users-controller');
 const router = new Router();
 
 router.get('/users', controller.getUsers);
